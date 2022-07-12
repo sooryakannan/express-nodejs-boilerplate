@@ -8,8 +8,8 @@ const customerSchema = mongoose.Schema({
         required:true,
     },
     lastName:{
-        typr: String,
-        required:true
+        type: String,
+        required:true,
     },
     email:{
         type: String,
@@ -27,23 +27,15 @@ const customerSchema = mongoose.Schema({
     },
     phoneNumber:{
         type: Number,
-        validate: {
-            validator: function(v) {
-                return /d{10}/.test(v);
-            },
-            message: '{VALUE} is not a valid 10 digit number!'
-        },
+        min:7000000000,
+        max:9999999999,
         required:true,
     },
     age:{
         type: Number,
-        validate:{
-        validator: function(v){
-            return /d{2}/.test(v);
-        },
-        message: '{VALUE} is not a valid age!'
-        },
         required:true,
+        min:10,
+        max:100,
     },
     location:{
         type: String,
@@ -52,12 +44,8 @@ const customerSchema = mongoose.Schema({
     pin:{
         type: Number,
         required:true,
-        validate:{
-            validator: function(v){
-                return /d{6}/.test(v);
-            },
-            message: '{VALUE} is not a valid pin number!'
-            },
+        min:600000,
+        max:700000,
     },
     dob:{
         type: Date,
@@ -76,6 +64,17 @@ const customerSchema = mongoose.Schema({
 
 customerSchema.plugin(toJSON);
 
-const customer = mongoose.model('customer', customerSchema);
+/**
+ * Check if email is taken
+ * @param {string} email - The user's email
+ * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
+ * @returns {Promise<boolean>}
+ */
+ customerSchema.statics.isEmailTaken = async function (email, excludeUserId) {
+    const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+    return !!user;
+  };
 
-module.exports = customer;
+const Customer = mongoose.model('Customer', customerSchema);
+
+module.exports = Customer;
