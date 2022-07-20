@@ -120,6 +120,79 @@ components:
           example:
             code: 404
             message: Not found
+    product:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName: 
+          type: string
+        email:
+          type: email
+        phoneNumber:
+          type: number
+        age:
+          type: number
+        location:
+          type: string
+        pin:
+          type: number
+        dob:
+          type: date
+        gender:
+          type: string
+        domain:
+          type: string
+      example:
+        firstName: fakename
+        lastName: fakename
+        email: fakename@example.com
+        phoneNumber: 9988665544
+        age: 25
+        location: america
+        pin: 656651
+        dob: 1977-05-27
+        gender: male
+        domain: developer
+  responses:
+    DuplicateEmail:
+      description: Email already taken
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Email already taken
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 401
+            message: Please authenticate
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 403
+            message: Forbidden
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 404
+            message: Not found
 
   securitySchemes:
 
